@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1063946903752",
+    "firebase_url": "https://healthtrack-30662-default-rtdb.firebaseio.com",
+    "project_id": "healthtrack-30662",
+    "storage_bucket": "healthtrack-30662.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063946903752:android:8fefcea2287ce2b06f05fd",
+        "android_client_info": {
+          "package_name": "com.example.healthtrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063946903752-b50vtm8lg9sdgjdb5gpfujikvkuk4dga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlaPqM2N4oNCBScngMJpNsW1BnF4KipkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063946903752-b50vtm8lg9sdgjdb5gpfujikvkuk4dga.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1063946903752-1vtomlok9uq4v7kn6ul2s82ci8noaut5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.healthtrack"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Symptoms/Add%20Other%20Symptom/Add_otherSymptoms.dart';
 import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Symptoms/Chest%20Pain/ChestPain_data.dart';
 import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Symptoms/Coughing/Cough_data.dart';
 import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Symptoms/Fever/Fever_data.dart';
@@ -19,6 +20,7 @@ class SymptomsPage extends StatelessWidget {
           HeadachePage(),
           RunnyNosePage(),
           VomitPage(),
+          AddOthersymptoms(),
       ],
     );
   }

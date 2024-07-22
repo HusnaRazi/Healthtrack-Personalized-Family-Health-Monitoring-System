@@ -4,7 +4,6 @@ import 'package:healthtrack/firebase_options.dart';
 import 'package:healthtrack/screens/splash_screen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

@@ -33,17 +33,15 @@ class _FilePageState extends State<FilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // Define what happens when the button is tapped
-          },
-        ),
-        title: const Text(
-          'Medical Records',
-          style: TextStyle(
-            fontFamily: 'MuseoSlab',
-            fontWeight: FontWeight.bold,
+        title: const Padding(
+          padding: EdgeInsets.only(left: 12.0), // Adjust the padding value to suit your design
+          child: Text(
+            'Medical Records',
+            style: TextStyle(
+              fontFamily: 'MuseoSlab',
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
         actions: [
@@ -89,6 +87,7 @@ class _FilePageState extends State<FilePage> {
           ),
         ],
         backgroundColor: Colors.lightBlue[100],
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Container(

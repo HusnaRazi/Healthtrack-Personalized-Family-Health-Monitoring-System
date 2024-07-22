@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthtrack/screens/Dashboard%20Page/Dashboard_page.dart';
+import 'package:healthtrack/screens/Family%20Account/FamilyAccount_page.dart';
 import 'package:healthtrack/screens/File%20Page/FileUploadPage.dart';
 import 'package:healthtrack/screens/Setting%20Page/SettingProfile.dart';
 import 'package:healthtrack/screens/WelcomePage/HomePage.dart';
@@ -43,8 +45,8 @@ class NavigationController extends GetxController{
   final screens = [
   const HomePage(),
   const FilePage(),
-  Text('Family Screen', style: TextStyle(fontSize: 24)),
-  Text('Summary Screen', style: TextStyle(fontSize: 24)),
+  AddFamilyMemberPage(),
+  const DashboardPage(),
   const ProfilePage(),
   ];
 }

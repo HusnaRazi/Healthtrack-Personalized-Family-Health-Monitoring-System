@@ -12,12 +12,17 @@ class _HeartRateGuideState extends State<HeartRateGuide> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 4, // Adds shadow to the card for better visual separation
       margin: const EdgeInsets.symmetric(horizontal: 20),
       color: Colors.white,
       child: ExpansionTile(
-        leading: const Icon(LineAwesomeIcons.book, color: Colors.red),
+        leading: SizedBox(
+          width: 24,
+          height: 24,
+          child: Image.asset('images/chart.png'),
+        ),
         title: const Text(
-          'Guide',
+          'Heart Rate Guide',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -25,303 +30,75 @@ class _HeartRateGuideState extends State<HeartRateGuide> {
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Table(
-              border: TableBorder.all(),
+              border: TableBorder.all(color: Colors.grey[300]!), // Lighter border color for the table
               columnWidths: const {
                 0: FlexColumnWidth(1),
                 1: FlexColumnWidth(3),
               },
-              children: const [
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          'Age',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+              children: List<TableRow>.generate(11, (index) {
+                if (index == 0) {
+                  return TableRow( // Header row with a different style
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200], // Background color for the header
+                    ),
+                    children: [
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            'Age',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          'Beats per Minute',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            'Beats per Minute',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '20',
-                          style: TextStyle(
-                            fontSize: 16,
+                    ],
+                  );
+                } else {
+                  return TableRow( // Data rows
+                    children: [
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            '${20 + (index - 1) * 5}', // Dynamically generated age
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '100–170',
-                          style: TextStyle(
-                            fontSize: 16,
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            '${100 - (index - 1) * 2}–${170 - (index - 1) * 2}', // Dynamically generated BPM range
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '30',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '95–162',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '35',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '93–157',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '40',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '90–153',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '45',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '88-149',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '50',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '85-145',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '55',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '83–140',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '60',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '80-136',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '65',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '78-132',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '70',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          '75-128',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  );
+                }
+              }),
             ),
           ),
           const SizedBox(height: 20),

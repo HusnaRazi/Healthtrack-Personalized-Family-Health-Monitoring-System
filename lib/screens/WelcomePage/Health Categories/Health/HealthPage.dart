@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Health/Blood%20Glucose/BloodGlucose.dart';
+import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Health/Blood%20Oxygen/BloodOxygenPage.dart';
 import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Health/Blood%20Pressure/BloodPressure.dart';
 import 'package:healthtrack/screens/WelcomePage/Health%20Categories/Health/Heart%20Rate/HeartRate.dart';
 
@@ -14,8 +16,10 @@ class _HealthPageState extends State<HealthPage> {
     Widget build(BuildContext context) {
       return const Column(
         children: <Widget>[
-          HeartRate(),
+          BloodGlucose(),
+          BloodOxygen(),
           BloodPressure(),
+          HeartRate(),
         ],
       );
     }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HeartRateAllData extends StatefulWidget {
   const HeartRateAllData({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class HeartRateAllData extends StatefulWidget {
 
 class _HeartRateAllDataState extends State<HeartRateAllData> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  DateTime? selectedDate; // Changed to nullable DateTime
+  DateTime? selectedDate;
 
   Future<List<Map<String, dynamic>>> fetchHeartRateData() async {
     try {
@@ -58,11 +59,142 @@ class _HeartRateAllDataState extends State<HeartRateAllData> {
     }
   }
 
+  Future<void> _showHeartRateEditDialog(BuildContext context, Map<String, dynamic> heartRateData) async {
+    TextEditingController rateController = TextEditingController(text: heartRateData['bpm'].toString());
+    DateTime dateTime = (heartRateData['timestamp'] as Timestamp).toDate();
+    DateTime newDate = dateTime;
+    TimeOfDay newTime = TimeOfDay.fromDateTime(dateTime);
+
+    GlobalKey<FormState> _formKey = GlobalKey<FormState>();  // Add a form key for validation
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Heart Rate Data',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _formKey, // Set form key
+              child: ListBody(
+                children: <Widget>[
+                  SizedBox(height: 5),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      const Text(
+                        'Heart Rate: ',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          controller: rateController,
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                            hintText: 'Enter BPM',
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey.shade400),
+                                borderRadius: BorderRadius.circular(5)
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  InkWell(
+                    child: ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: const Text("Select Date"),
+                      subtitle: Text("${newDate.day}-${newDate.month}-${newDate.year}"),
+                    ),
+                    onTap: () async {
+                      final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: newDate,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+                      if (picked != null) {
+                        newDate = picked;
+                      }
+                    },
+                  ),
+                  InkWell(
+                    child: ListTile(
+                      leading: const Icon(Icons.access_time),
+                      title: const Text("Select Time"),
+                      subtitle: Text(newTime.format(context)),
+                    ),
+                    onTap: () async {
+                      final TimeOfDay? picked = await showTimePicker(
+                        context: context,
+                        initialTime: newTime,
+                      );
+                      if (picked != null) {
+                        newTime = picked;
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Save'),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _updateHeartRateData(heartRateData['id'], rateController.text, newDate, newTime);
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _updateHeartRateData(String docId, String bpm, DateTime date, TimeOfDay time) async {
+    int bpmValue = int.tryParse(bpm) ?? 0; // Validate and parse the input
+    DateTime newDateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    await _firestore.collection('Heart Rate').doc(docId).update({
+      'bpm': bpmValue, // Changed 'rate' to 'bpm' in the database field as well
+      'timestamp': Timestamp.fromDate(newDateTime),
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Data updated successfully')),
+    );
+
+    setState(() {}); // Refresh the list to show updated data
+  }
+
   Widget buildHeartRateCard(Map<String, dynamic> heartRateData) {
     DateTime timestamp = (heartRateData['timestamp'] as Timestamp).toDate();
     String bpm = heartRateData['bpm'].toString();
-    String date = '${timestamp.day.toString().padLeft(2, '0')}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.year}';
-    String time = '${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}:${timestamp.second.toString().padLeft(2, '0')}';
+    String date = DateFormat('dd/MM/yyyy').format(timestamp); // Use DateFormat for date
+    String time = DateFormat('hh:mm a').format(timestamp); // Format time to 12-hour format with AM/PM
 
     return Padding(
       padding: const EdgeInsets.only(right: 8, left: 8),
@@ -104,7 +236,7 @@ class _HeartRateAllDataState extends State<HeartRateAllData> {
                   // Edit button
                   ElevatedButton.icon(
                     onPressed: () {
-                      // Implement your edit functionality
+                      _showHeartRateEditDialog(context, heartRateData);
                     },
                     icon: const Icon(Icons.edit),
                     label: const Text('Edit'),
@@ -173,6 +305,14 @@ class _HeartRateAllDataState extends State<HeartRateAllData> {
           fontSize: 20,
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {}); // Refresh action
+            },
+            icon: Icon(Icons.refresh, color: Colors.black),
+          ),
+        ],
       ),
       backgroundColor: Colors.lightBlue[100],
       body: Column(
@@ -180,7 +320,7 @@ class _HeartRateAllDataState extends State<HeartRateAllData> {
           InkWell(
             onTap: () => _selectDate(context),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
               child: Row(
                 children: [
                   Icon(Icons.calendar_month, color: Colors.blueGrey[900]), // Calendar icon
